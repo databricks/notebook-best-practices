@@ -9,8 +9,8 @@ env:
   DATABRICKS_HOST: https://db-sme-demo-docs.cloud.databricks.com/
 
   # Output from the command: terraform output test_cluster_id
-  UNIT_TEST_CLUSTER_ID: "0329-153748-a0cjinww"
-  NOTEBOOK_TEST_CLUSTER_ID: "0329-153748-a0cjinww"
+  UNIT_TEST_CLUSTER_ID: "0516-211724-wjng6lmb"
+  NOTEBOOK_TEST_CLUSTER_ID: "0516-211724-wjng6lmb"
 
 jobs:
   unit-test-notebook:
