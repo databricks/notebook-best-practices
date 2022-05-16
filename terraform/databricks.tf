@@ -66,3 +66,8 @@ resource "databricks_permissions" "cluster_usage" {
     permission_level = "CAN_ATTACH_TO"
   }
 }
+
+output "test_cluster_id" {
+  value = databricks_cluster.shared_test_cluster.cluster_id
+  description = "The cluster ID of the test cluster."
+}

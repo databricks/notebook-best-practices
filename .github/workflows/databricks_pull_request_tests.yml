@@ -8,6 +8,7 @@ env:
   # Replace this hostname with your Databricks workspace.
   DATABRICKS_HOST: https://db-sme-demo-docs.cloud.databricks.com/
 
+  # Output from the command: terraform output test_cluster_id
   UNIT_TEST_CLUSTER_ID: "0329-153748-a0cjinww"
   NOTEBOOK_TEST_CLUSTER_ID: "0329-153748-a0cjinww"
 
