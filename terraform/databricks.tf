@@ -24,6 +24,7 @@ resource "databricks_obo_token" "testrunner_pat" {
   lifetime_seconds = 3.156e+7 # 1 year
 }
 
+// TODO: Document the rationale for this separate provider.
 provider "databricks" {
   alias = "sp"
   host = var.databricks_host
@@ -36,4 +37,32 @@ resource "databricks_git_credential" "github" {
   git_username = var.github_username
   git_provider = "github"
   personal_access_token = var.github_token
+}
+
+data "databricks_node_type" "smallest" {
+  local_disk = true
+}
+
+data "databricks_spark_version" "latest_lts" {
+  long_term_support = true
+}
+
+resource "databricks_cluster" "shared_test_cluster" {
+  cluster_name            = "Shared test cluster"
+  spark_version           = data.databricks_spark_version.latest_lts.id
+  node_type_id            = data.databricks_node_type.smallest.id
+  autotermination_minutes = 120
+  autoscale {
+    min_workers = 1
+    max_workers = 5
+  }
+}
+
+resource "databricks_permissions" "cluster_usage" {
+  cluster_id = databricks_cluster.shared_test_cluster.cluster_id
+
+  access_control {
+    user_name       = databricks_service_principal.testrunner.application_id
+    permission_level = "CAN_ATTACH_TO"
+  }
 }
