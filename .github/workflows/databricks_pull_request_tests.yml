@@ -1,0 +1,64 @@
+# Run the testing notebook in the repo on every pull request except main.
+name: Run pre-merge Databricks tests
+
+on:
+  pull_request:
+
+env:
+  # Replace this hostname with your Databricks workspace.
+  DATABRICKS_HOST: https://db-sme-demo-docs.cloud.databricks.com/
+
+  UNIT_TEST_CLUSTER_ID: "0329-153748-a0cjinww"
+  NOTEBOOK_TEST_CLUSTER_ID: "0329-153748-a0cjinww"
+
+jobs:
+  unit-test-notebook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Run test notebook
+        uses: databricks/run-notebook@main
+        with:
+          local-notebook-path: tests/run_unit_tests.py
+          git-commit: "${{ github.event.pull_request.head.sha }}"
+          databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
+          existing-cluster-id: ${{ env.UNIT_TEST_CLUSTER_ID }}
+          # Grant all users view permission on the notebook's results, so that they can
+          # see the result of the notebook, if they have related access permissions.
+          access-control-list-json: >
+            [
+              {
+                "group_name": "users",
+                "permission_level": "CAN_VIEW"
+              }
+            ]
+          run-name: "EDA transforms helper module unit tests"
+
+  covid-eda-notebook:
+    # Run the notebook test only if the unit tests succeed.
+    needs: unit-test-notebook
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Run test notebook
+        uses: databricks/run-notebook@main
+        with:
+          local-notebook-path: covid_eda_modular.py
+          git-commit: "${{ github.event.pull_request.head.sha }}"
+          databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
+          existing-cluster-id: ${{ env.NOTEBOOK_TEST_CLUSTER_ID }}
+          notebook-params-json: >
+            { "run_as": "testing" }
+          # Grant all users view permission on the notebook's results, so that they can
+          # see the result of the notebook, if they have related access permissions.
+          access-control-list-json: >
+            [
+              {
+                "group_name": "users",
+                "permission_level": "CAN_VIEW"
+              }
+            ]
+          run-name: "Covid EDA notebook pre-merge test"
