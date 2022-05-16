@@ -17,5 +17,5 @@ resource "github_repository" "github_repository" {
 resource "github_actions_secret" "github_actions_databricks_token" {
   repository = github_repository.github_repository.name
   secret_name = "DATABRICKS_TOKEN"
-  plaintext_value = databricks_token.testrunner_pat.token_value
+  plaintext_value = databricks_obo_token.testrunner_pat.token_value
 }

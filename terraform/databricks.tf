@@ -15,15 +15,19 @@ resource "databricks_permissions" "token_usage" {
   }
 }
 
-resource "databricks_token" "testrunner_pat" {
+resource "databricks_obo_token" "testrunner_pat" {
+  depends_on = [
+    databricks_service_principal.testrunner
+  ]
   comment  = "Test runner SP PAT"
-  lifetime_seconds = 0
+  application_id = databricks_service_principal.testrunner.application_id
+  lifetime_seconds = 3.156e+7 # 1 year
 }
 
 provider "databricks" {
   alias = "sp"
   host = var.databricks_host
-  token = databricks_token.testrunner_pat.token_value
+  token = databricks_obo_token.testrunner_pat.token_value
 }
 
 resource "databricks_git_credential" "github" {
