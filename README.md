@@ -6,10 +6,13 @@ https://docs.github.com/en/developers/overview/managing-deploy-keys#machine-user
 
 https://github.com/join to create the repo user
 
+https://docs.github.com/en/enterprise-server@3.1/organizations/managing-membership-in-your-organization/adding-people-to-your-organization
+
 TODO: Create or link to Aha ideas:
 
 * GH deploy keys auth support for scoped access
 * Support for discovering tests to be run, so that users do not need a repo admin in order to add new tests.
+* Support for triggered execution, so that trivial changes unrelated to the notebook and its deps do not require test execution.
 
 Setup instructions:
 
