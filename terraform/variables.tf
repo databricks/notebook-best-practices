@@ -34,5 +34,4 @@ variable "github_readonly_machine_user_token" {
   description = "A GitHub authentication token with at least read-only access to github_repository_name. This is used by the databricks_host workspace when cloning a private repository."
   type        = string
   sensitive   = true
-  nullable    = true
 }
