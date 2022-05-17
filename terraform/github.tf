@@ -45,3 +45,15 @@ resource "github_actions_secret" "github_actions_databricks_token" {
   secret_name     = "DATABRICKS_TOKEN"
   plaintext_value = databricks_obo_token.testrunner_pat.token_value
 }
+
+// TODO: Fill in.
+// 
+// https://docs.github.com/en/developers/overview/managing-deploy-keys#machine-users
+// https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_collaborator
+resource "github_repository_collaborator" "machine_user_readonly_collaborator" {
+    // TODO: Document. (Skip configuring the collaborator if we use the same account to configure the repo and clone.)
+    count = var.github_readonly_machine_user_token != var.github_repo_admin_token ? 1 : 0
+    permission = "pull"
+    repository = var.github_repository_name
+    username   = var.github_readonly_machine_user_name
+}

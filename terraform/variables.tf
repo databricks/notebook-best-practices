@@ -14,12 +14,6 @@ variable "github_owner" {
   type        = string
 }
 
-# Unused?
-# variable "github_username" {
-#   description = "Your GitHub username."
-#   type        = string
-# }
-
 variable "github_repository_name" {
   description = "The name of the GitHub repostiory. Example: notebook-best-practices"
   type        = string
@@ -32,12 +26,12 @@ variable "github_repo_admin_token" {
 }
 
 variable "github_readonly_machine_user_name" {
-  description = "A GitHub username with at least read-only access to github_repository_name."
+  description = "A GitHub username with at least read-only access to github_repository_name. This is used by the databricks_host workspace when cloning a private repository."
   type        = string
 }
 
 variable "github_readonly_machine_user_token" {
-  description = "A GitHub authentication token with at least read-only access to github_repository_name. This is used by the databricks_host workspace when cloning a private repository."
+  description = "A GitHub authentication token with at least read-only access to github_repository_name. This is used by the databricks_host workspace when cloning a private repository."
   type        = string
   sensitive   = true
 }
