@@ -1,5 +1,5 @@
 variable "databricks_host" {
-  description = "The host of the Databricks Workspace. Example: https://demo.cloud.databricks.com/"
+  description = "The host of the Databricks Workspace. Example: https://db-sme-demo-docs.cloud.databricks.com/"
   type        = string
 }
 
@@ -10,23 +10,34 @@ variable "databricks_token" {
 }
 
 variable "github_owner" {
-  description = "The owner of the GitHub repostiory. Example: Databricks"
+  description = "The organization owner of the GitHub repostiory. Example: Databricks"
   type        = string
 }
 
-# TODO: Add a warning about SP GitHub permissions.
-variable "github_username" {
-  description = "Your GitHub username."
-  type        = string
-}
+# Unused?
+# variable "github_username" {
+#   description = "Your GitHub username."
+#   type        = string
+# }
 
 variable "github_repository_name" {
   description = "The name of the GitHub repostiory. Example: notebook-best-practices"
   type        = string
 }
 
-variable "github_token" {
-  description = "A GitHub authentication token."
+variable "github_repo_admin_token" {
+  description = "A GitHub authentication token with admin permission for github_repository_name. This is used to configure branch protection and required pre-merge tests."
+  type        = string
+  sensitive   = true
+}
+
+variable "github_readonly_machine_user_name" {
+  description = "A GitHub username with at least read-only access to github_repository_name."
+  type        = string
+}
+
+variable "github_readonly_machine_user_token" {
+  description = "A GitHub authentication token with at least read-only access to github_repository_name. This is used by the databricks_host workspace when cloning a private repository."
   type        = string
   sensitive   = true
 }
