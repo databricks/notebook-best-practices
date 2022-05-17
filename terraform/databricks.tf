@@ -63,7 +63,7 @@ resource "databricks_permissions" "cluster_usage" {
 
   access_control {
     user_name       = databricks_service_principal.testrunner.application_id
-    permission_level = "CAN_ATTACH_TO"
+    permission_level = "CAN_RESTART"
   }
 }
 
