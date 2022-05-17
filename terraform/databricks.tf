@@ -34,9 +34,9 @@ provider "databricks" {
 resource "databricks_git_credential" "github" {
   provider = databricks.sp
 
-  git_username = var.github_username
+  git_username = var.github_readonly_machine_user_name
   git_provider = "github"
-  personal_access_token = var.github_token
+  personal_access_token = var.github_readonly_machine_user_token
 }
 
 data "databricks_node_type" "smallest" {
