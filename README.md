@@ -1,4 +1,10 @@
-# Example: Using software engineering best practices in Databricks notebooks
+# Using software engineering best practices in Databricks notebooks
+
+Setup ingredients:
+
+https://docs.github.com/en/developers/overview/managing-deploy-keys#machine-users
+
+https://github.com/join to create the repo user
 
 TODO: Create or link to Aha ideas:
 
@@ -14,5 +20,7 @@ OSX
 ```
 brew install pyenv pipenv
 pyenv install 3.8.10
-pipenv install -r requirements.txt --python 3.8.10
+pyenv shell 3.8.10
+cd ~/. && python -m venv notebook-best-practices
+
 ```
