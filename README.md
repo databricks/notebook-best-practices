@@ -21,6 +21,11 @@ OSX
 brew install pyenv pipenv
 pyenv install 3.8.10
 pyenv shell 3.8.10
-cd ~/. && python -m venv notebook-best-practices
+cd ~/. && python -m venv notebook-best-practices-env && popd
+```
 
+From the repo root
+```
+source ~/notebook-best-practices-env/bin/activate
+pip install -r requirements.txt
 ```
