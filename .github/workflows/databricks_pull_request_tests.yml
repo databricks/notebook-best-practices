@@ -15,7 +15,6 @@ env:
 jobs:
   unit-test-notebook:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -41,7 +40,6 @@ jobs:
     # Run the notebook test only if the unit tests succeed.
     needs: unit-test-notebook
 
-    timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
