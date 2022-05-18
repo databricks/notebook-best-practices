@@ -26,8 +26,11 @@ resource "databricks_service_principal" "testrunner" {
 //
 // This permission is a prerequisite for generating the token used by our GitHub Action to 
 // authenticate to Databricks. (See 'databricks_obo_token' below.)
-resource "databricks_permissions" "token_usage" {
+resource "databricks_permissions" "test_token_usage" {
   authorization = "tokens"
+  depends_on = [
+    databricks_service_principal.testrunner,
+  ]
   access_control {
     service_principal_name = databricks_service_principal.testrunner.application_id
     permission_level       = "CAN_USE"
@@ -41,10 +44,10 @@ resource "databricks_permissions" "token_usage" {
 // Databricks workspace and run tests.
 resource "databricks_obo_token" "testrunner_pat" {
   depends_on = [
-    databricks_service_principal.testrunner
+    databricks_permissions.test_token_usage,
   ]
-  comment  = "Test runner SP PAT"
-  application_id = databricks_service_principal.testrunner.application_id
+  comment          = "Test runner SP PAT"
+  application_id   = databricks_service_principal.testrunner.application_id
   lifetime_seconds = 3.156e+7 // 1 year, after which this must be refreshed.
 }
 
@@ -53,7 +56,7 @@ resource "databricks_obo_token" "testrunner_pat" {
 // This service principal is used to run tests associated with GitHub pull requests.
 provider "databricks" {
   alias = "sp-test"
-  host = var.databricks_host
+  host  = var.databricks_host
   token = databricks_obo_token.testrunner_pat.token_value
 }
 
@@ -61,12 +64,20 @@ provider "databricks" {
 // https://registry.terraform.io/providers/databrickslabs/databricks/latest/docs/resources/git_credential
 //
 // Authentication is required to clone a private repository.
-resource "databricks_git_credential" "github" {
+resource "databricks_git_credential" "github-sp-test" {
   provider = databricks.sp-test
-
-  git_username = var.github_readonly_machine_user_name
-  git_provider = "github"
+  depends_on = [
+    databricks_obo_token.testrunner_pat
+  ]
+  git_username          = var.github_readonly_machine_user_name
+  git_provider          = "github"
   personal_access_token = var.github_readonly_machine_user_token
+  force                 = true
+
+  // TODO: File bug.
+  lifecycle {
+    ignore_changes = [git_provider]
+  }
 }
 
 data "databricks_node_type" "smallest" {
@@ -92,12 +103,102 @@ resource "databricks_permissions" "cluster_usage" {
   cluster_id = databricks_cluster.shared_test_cluster.cluster_id
 
   access_control {
-    user_name       = databricks_service_principal.testrunner.application_id
+    user_name        = databricks_service_principal.testrunner.application_id
     permission_level = "CAN_RESTART"
   }
 }
 
 output "test_cluster_id" {
-  value = databricks_cluster.shared_test_cluster.cluster_id
+  value       = databricks_cluster.shared_test_cluster.cluster_id
   description = "The cluster ID of the test cluster."
+}
+
+resource "databricks_service_principal" "prodrunner" {
+  display_name         = "Automation-only prod runner SP"
+  allow_cluster_create = true
+}
+
+resource "databricks_permissions" "prod_token_usage" {
+  authorization = "tokens"
+  depends_on = [
+    databricks_service_principal.prodrunner,
+  ]
+  access_control {
+    service_principal_name = databricks_service_principal.prodrunner.application_id
+    permission_level       = "CAN_USE"
+  }
+}
+
+resource "databricks_obo_token" "prodrunner_pat" {
+  depends_on = [
+    databricks_permissions.prod_token_usage,
+  ]
+  comment          = "Prod runner SP PAT"
+  application_id   = databricks_service_principal.prodrunner.application_id
+  lifetime_seconds = 3.156e+7 // 1 year, after which this must be refreshed.
+}
+
+provider "databricks" {
+  alias = "sp-prod"
+  host  = var.databricks_host
+  token = databricks_obo_token.prodrunner_pat.token_value
+}
+
+resource "databricks_git_credential" "github-sp-prod" {
+  provider = databricks.sp-prod
+  depends_on = [
+    databricks_obo_token.prodrunner_pat
+  ]
+  git_username          = var.github_readonly_machine_user_name
+  git_provider          = "github"
+  personal_access_token = var.github_readonly_machine_user_token
+  force                 = true
+
+  // TODO: File bug.
+  lifecycle {
+    ignore_changes = [git_provider]
+  }
+}
+
+resource "databricks_job" "covid_etl" {
+  provider = databricks.sp-prod
+
+  name = "COVID table ETL"
+
+  // https://registry.terraform.io/providers/databrickslabs/databricks/latest/docs/resources/job#new_cluster
+  new_cluster {
+    num_workers = 1
+
+    // Use the same versions as in our test cluster.
+    spark_version = databricks_cluster.shared_test_cluster.spark_version
+    node_type_id  = databricks_cluster.shared_test_cluster.node_type_id
+  }
+
+  // https://registry.terraform.io/providers/databrickslabs/databricks/latest/docs/resources/job#notebook_task-configuration-block
+  notebook_task {
+    notebook_path = "tests/run_unit_tests"
+  }
+
+  // https://registry.terraform.io/providers/databrickslabs/databricks/latest/docs/resources/job#git_source-configuration-block
+  git_source {
+    url      = format("https://github.com/%s/%s", var.github_owner, var.github_repository_name)
+    branch   = "main"
+    provider = "github"
+  }
+
+  // https://registry.terraform.io/providers/databrickslabs/databricks/latest/docs/resources/job#email_notifications-configuration-block
+  email_notifications {
+    on_failure = ["demo-etl-alerts@databricks.com"]
+  }
+
+  // https://registry.terraform.io/providers/databrickslabs/databricks/latest/docs/resources/job#schedule-configuration-block
+  # schedule {
+  #   // Daily at 2 AM.
+  #   quartz_cron_expression = "0 0 2 1/1 * ? *"
+  #   timezone_id = "US/Pacific"
+  # }
+}
+
+output "job_url" {
+  value = databricks_job.covid_etl.url
 }
