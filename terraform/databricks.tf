@@ -199,6 +199,6 @@ resource "databricks_job" "covid_etl" {
   # }
 }
 
-output "job_url" {
+output "prod_covid_etl_job_url" {
   value = databricks_job.covid_etl.url
 }
