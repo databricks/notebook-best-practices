@@ -176,7 +176,8 @@ resource "databricks_job" "covid_etl" {
 
   // https://registry.terraform.io/providers/databrickslabs/databricks/latest/docs/resources/job#notebook_task-configuration-block
   notebook_task {
-    notebook_path = "tests/run_unit_tests"
+    // TODO: Update to the actual notebook.
+    notebook_path = "notebooks/run_unit_tests"
   }
 
   // https://registry.terraform.io/providers/databrickslabs/databricks/latest/docs/resources/job#git_source-configuration-block
