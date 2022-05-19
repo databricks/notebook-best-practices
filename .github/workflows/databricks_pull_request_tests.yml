@@ -22,7 +22,7 @@ jobs:
       - name: Run test notebook
         uses: databricks/run-notebook@main
         with:
-          local-notebook-path: tests/run_unit_tests.py
+          local-notebook-path: notebooks/run_unit_tests.py
           git-commit: "${{ github.event.pull_request.head.sha }}"
           databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
           existing-cluster-id: ${{ env.UNIT_TEST_CLUSTER_ID }}
@@ -49,7 +49,7 @@ jobs:
       - name: Run test notebook
         uses: databricks/run-notebook@main
         with:
-          local-notebook-path: covid_eda_modular.py
+          local-notebook-path: notebooks/covid_eda_modular.py
           git-commit: "${{ github.event.pull_request.head.sha }}"
           databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
           existing-cluster-id: ${{ env.NOTEBOOK_TEST_CLUSTER_ID }}
