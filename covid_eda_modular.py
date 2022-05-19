@@ -1,10 +1,6 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC ### View the latest COVID-19 hospitalization data
-
-# COMMAND ----------
-
-# MAGIC %md
 # MAGIC #### Setup 
 
 # COMMAND ----------
@@ -23,15 +19,11 @@
 
 # COMMAND ----------
 
-from covid_analysis.transforms import *
-
-url = "https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/hospitalizations/covid-hospitalizations.csv"
-path = "/tmp/covid-hospitalizations.csv"
-
-get_data(url, path)
+!curl "https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/hospitalizations/covid-hospitalizations.csv" -o /tmp/covid-hospitalizations.csv
 
 # COMMAND ----------
 
+from covid_analysis.transforms import *
 import pandas as pd
 
 # read from /tmp, subset for USA, pivot and fill missing values
