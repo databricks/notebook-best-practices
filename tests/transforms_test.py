@@ -7,21 +7,6 @@ import numpy as np
 from covid_analysis.transforms import *
 from pyspark.sql import SparkSession
 
-# No-op change.
-
-# Make sure get_data saves data to the expected path and that it is a CSV file.
-def test_get_data():
-    url = "https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/hospitalizations/covid-hospitalizations.csv"
-    local_path = "/tmp/covid-hospitalizations.csv"
-    get_data(url, local_path)
-    assert os.path.exists("/tmp/covid-hospitalizations.csv")
-
-
-def test_file_ext():
-    local_path = "/tmp/covid-hospitalizations.csv"
-    extension = os.path.splitext(local_path)[1]
-    assert extension == ".csv"
-
 
 @pytest.fixture
 def raw_input_df() -> pd.DataFrame:

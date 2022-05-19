@@ -1,12 +1,5 @@
-import wget
 import pandas as pd
 import pyspark.pandas as ps
-import sys
-
-# Get the latest data.
-def get_data(url, path):
-    sys.stdout.fileno = lambda: False
-    wget.download(url, path)
 
 
 # Filter by country code.
