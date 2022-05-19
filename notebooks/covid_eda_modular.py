@@ -66,7 +66,7 @@ else:
 # COMMAND ----------
 
 # Using Databricks visualizations and data profiling
-display(spark.table(table_name))
+display(spark.table('covid_stats'))
 
 # COMMAND ----------
 
