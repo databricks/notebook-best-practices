@@ -11,6 +11,8 @@
 
 # MAGIC %load_ext autoreload
 # MAGIC %autoreload 2
+# MAGIC dbutils.widgets.dropdown('Mode', 'Test', ['Test', 'Prod'])
+# MAGIC running_under_test = dbutils.widgets.get('Mode') == 'Test'
 
 # COMMAND ----------
 
@@ -19,19 +21,26 @@
 
 # COMMAND ----------
 
-!curl "https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/hospitalizations/covid-hospitalizations.csv" -o /tmp/covid-hospitalizations.csv
+import os
+
+if running_under_test:
+  data_path = os.path.abspath('../tests/testdata.csv')
+else:
+  data_path = 'https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/hospitalizations/covid-hospitalizations.csv'
+print(f'Data path: {data_path}')
 
 # COMMAND ----------
 
 from covid_analysis.transforms import *
 import pandas as pd
 
-# read from /tmp, subset for USA, pivot and fill missing values
-df = pd.read_csv("/tmp/covid-hospitalizations.csv")
+df = pd.read_csv(data_path)
 df = filter_country(df, country='DZA')
 df = pivot_and_clean(df, fillna=0)  
 df = clean_spark_cols(df)
 df = index_to_col(df, colname='date')
+# Convert from Pandas to a pyspark sql DataFrame.
+df = spark.createDataFrame(df)
 
 display(df)
 
@@ -43,8 +52,11 @@ display(df)
 
 # COMMAND ----------
 
-# Write to Delta Lake
-df.to_table(name="dev_covid_trends", mode='overwrite')
+if running_under_test:
+  df.createOrReplaceTempView('covid_stats')
+else:
+  # Write to Delta Lake
+  df.write.mode('overwrite').saveAsTable('covid_stats')
 
 # COMMAND ----------
 
@@ -54,10 +66,9 @@ df.to_table(name="dev_covid_trends", mode='overwrite')
 # COMMAND ----------
 
 # Using Databricks visualizations and data profiling
-display(spark.table("dev_covid_analysis"))
+display(spark.table(table_name))
 
 # COMMAND ----------
 
 # Using python
-df.to_pandas().plot(figsize=(13,6), grid=True).legend(loc='upper left')
-
+df.toPandas().plot(figsize=(13,6), grid=True).legend(loc='upper left');

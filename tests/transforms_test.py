@@ -13,61 +13,7 @@ def raw_input_df() -> pd.DataFrame:
     """
     Create a basic version of the input dataset for testing, including NaNs.
     """
-    df = pd.DataFrame(
-        data=[
-            ["United States", "USA", "2022-04-17", "Daily ICU occupancy", np.nan],
-            [
-                "United States",
-                "USA",
-                "2022-04-17",
-                "Daily ICU occupancy per million",
-                "4.1",
-            ],
-            ["United States", "USA", "2022-04-17", "Daily hospital occupancy", "10000"],
-            [
-                "United States",
-                "USA",
-                "2022-04-17",
-                "Daily hospital occupancy per million",
-                "30.3",
-            ],
-            [
-                "United States",
-                "USA",
-                "2022-04-17",
-                "Weekly new hospital admissions",
-                "11000",
-            ],
-            [
-                "United States",
-                "USA",
-                "2022-04-17",
-                "Weekly new hospital admissions per million",
-                "32.8",
-            ],
-            ["Algeria", "DZA", "2022-04-18", "Daily ICU occupancy", "1010"],
-            ["Algeria", "DZA", "2022-04-18", "Daily ICU occupancy per million", "4.5"],
-            ["Algeria", "DZA", "2022-04-18", "Daily hospital occupancy", "11000"],
-            [
-                "Algeria",
-                "DZA",
-                "2022-04-18",
-                "Daily hospital occupancy per million",
-                "30.9",
-            ],
-            ["Algeria", "DZA", "2022-04-18", "Weekly new hospital admissions", "10000"],
-            [
-                "Algeria",
-                "DZA",
-                "2022-04-18",
-                "Weekly new hospital admissions per million",
-                "32.1",
-            ],
-        ],
-        columns=["entity", "iso_code", "date", "indicator", "value"],
-    )
-
-    return df
+    return pd.read_csv('tests/testdata.csv')
 
 
 @pytest.fixture
@@ -84,7 +30,7 @@ def colnames_df() -> pd.DataFrame:
         ],
     )
     return df
-
+  
 
 # Make sure the filter works as expected.
 def test_filter(raw_input_df):

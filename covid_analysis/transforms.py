@@ -1,5 +1,4 @@
 import pandas as pd
-import pyspark.pandas as ps
 
 
 # Filter by country code.
@@ -19,10 +18,8 @@ def pivot_and_clean(pdf, fillna):
 
 # Create column names that are compatible with Delta tables.
 def clean_spark_cols(pdf):
-    clean_cols = pdf.columns.str.replace(" ", "_")
-    pdf.columns = clean_cols
-    psdf = ps.from_pandas(pdf)
-    return psdf
+    pdf.columns = pdf.columns.str.replace(" ", "_")
+    return pdf
 
 
 # Convert index to column (works with pandas API on Spark, too).
