@@ -9,8 +9,7 @@ env:
   DATABRICKS_HOST: https://db-sme-demo-docs.cloud.databricks.com/
 
   # Output from the command: terraform output test_cluster_id
-  UNIT_TEST_CLUSTER_ID: "0516-211724-wjng6lmb"
-  NOTEBOOK_TEST_CLUSTER_ID: "0516-211724-wjng6lmb"
+  TEST_CLUSTER_ID: "0520-144212-b7qlkymf"
 
 jobs:
   unit-test-notebook:
@@ -25,7 +24,7 @@ jobs:
           local-notebook-path: notebooks/run_unit_tests.py
           git-commit: "${{ github.event.pull_request.head.sha }}"
           databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
-          existing-cluster-id: ${{ env.UNIT_TEST_CLUSTER_ID }}
+          existing-cluster-id: ${{ env.TEST_CLUSTER_ID }}
           # Grant all users view permission on the notebook's results, so that they can
           # see the result of the notebook, if they have related access permissions.
           access-control-list-json: >
@@ -52,7 +51,7 @@ jobs:
           local-notebook-path: notebooks/covid_eda_modular.py
           git-commit: "${{ github.event.pull_request.head.sha }}"
           databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
-          existing-cluster-id: ${{ env.NOTEBOOK_TEST_CLUSTER_ID }}
+          existing-cluster-id: ${{ env.TEST_CLUSTER_ID }}
           notebook-params-json: >
             { "Mode": "Test" }
           # Grant all users view permission on the notebook's results, so that they can

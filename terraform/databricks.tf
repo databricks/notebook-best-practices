@@ -124,6 +124,16 @@ resource "databricks_service_principal" "prodrunner" {
   allow_cluster_create = true
 }
 
+output "prod_service_principal_id" {
+  value = databricks_service_principal.prodrunner.id
+  description = "The ID of the service principal used for prod job executions"
+}
+
+output "test_service_principal_id" {
+  value = databricks_service_principal.testrunner.id
+  description = "The ID of the service principal used for test job executions"
+}
+
 resource "databricks_permissions" "prod_token_usage" {
   authorization = "tokens"
   depends_on = [
