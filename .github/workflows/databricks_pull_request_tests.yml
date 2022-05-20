@@ -54,7 +54,7 @@ jobs:
           databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
           existing-cluster-id: ${{ env.NOTEBOOK_TEST_CLUSTER_ID }}
           notebook-params-json: >
-            { "run_as": "testing" }
+            { "Mode": "Test" }
           # Grant all users view permission on the notebook's results, so that they can
           # see the result of the notebook, if they have related access permissions.
           access-control-list-json: >
