@@ -3,6 +3,8 @@
 
 # COMMAND ----------
 
+# MAGIC %pwd
+# MAGIC %ls ../
 # MAGIC %pip install -r ../requirements.txt
 
 # COMMAND ----------
