@@ -5,14 +5,10 @@
 
 # COMMAND ----------
 
-# MAGIC %pip install -r ../requirements.txt
-
-# COMMAND ----------
-
 # MAGIC %load_ext autoreload
 # MAGIC %autoreload 2
 # MAGIC dbutils.widgets.dropdown('Mode', 'Test', ['Test', 'Prod'])
-# MAGIC running_under_test = dbutils.widgets.get('Mode') == 'Test'
+# MAGIC running_under_test = dbutils.widgets.get('Mode') != 'Prod'
 
 # COMMAND ----------
 

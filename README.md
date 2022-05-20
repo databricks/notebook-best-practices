@@ -32,3 +32,5 @@ From the repo root
 source ~/notebook-best-practices-env/bin/activate
 pip install -r requirements.txt
 ```
+
+TODO: Demo of test execution being unable to modify production table.

@@ -97,6 +97,12 @@ resource "databricks_cluster" "shared_test_cluster" {
     min_workers = 1
     max_workers = 5
   }
+  // Enable ACLs to guard against tests modifying protected tables.
+  // https://docs.databricks.com/security/access-control/table-acls/table-acl.html#python-and-sql-table-access-control
+  spark_conf = {
+    "spark.databricks.acl.dfAclsEnabled" : "true",
+    "spark.databricks.repl.allowedLanguages" : "python,sql",
+  }
 }
 
 resource "databricks_permissions" "cluster_usage" {
@@ -116,6 +122,16 @@ output "test_cluster_id" {
 resource "databricks_service_principal" "prodrunner" {
   display_name         = "Automation-only prod runner SP"
   allow_cluster_create = true
+}
+
+output "prod_service_principal_id" {
+  value = databricks_service_principal.prodrunner.id
+  description = "The ID of the service principal used for prod job executions"
+}
+
+output "test_service_principal_id" {
+  value = databricks_service_principal.testrunner.id
+  description = "The ID of the service principal used for test job executions"
 }
 
 resource "databricks_permissions" "prod_token_usage" {
@@ -176,8 +192,10 @@ resource "databricks_job" "covid_etl" {
 
   // https://registry.terraform.io/providers/databrickslabs/databricks/latest/docs/resources/job#notebook_task-configuration-block
   notebook_task {
-    // TODO: Update to the actual notebook.
-    notebook_path = "notebooks/run_unit_tests"
+    notebook_path = "notebooks/covid_eda_modular"
+    base_parameters = {
+      "Mode" = "Prod"
+    }
   }
 
   // https://registry.terraform.io/providers/databrickslabs/databricks/latest/docs/resources/job#git_source-configuration-block
