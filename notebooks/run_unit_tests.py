@@ -3,9 +3,8 @@
 
 # COMMAND ----------
 
-# TODO: Parse requirements.txt to work-around %pip's incompatibility with table ACL clusters.
-# %pip install -r ../requirements.txt
-dbutils.library.installPyPI('pytest', '7.1.2')
+!cp ../requirements.txt ~/.
+%pip install -r ~/requirements.txt
 
 # COMMAND ----------
 
