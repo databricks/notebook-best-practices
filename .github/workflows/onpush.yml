@@ -24,7 +24,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7.5
+          python-version: 3.8
 
       - name: Install pip
         run: |
@@ -38,7 +38,7 @@ jobs:
       - name: Run unit tests
         run: |
           echo "Launching unit tests"
-          pytest tests/unit
+          pytest tests/
 
       - name: Jobless deployment (files only upload)
         run: |

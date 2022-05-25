@@ -1,0 +1,9 @@
+{
+    "environments": {
+        "default": {
+            "profile": "AWS-DOGFOOD",
+            "workspace_dir": "/Shared/dbx/covid_analysis",
+            "artifact_location": "dbfs:/Shared/dbx/projects/covid_analysis"
+        }
+    }
+}

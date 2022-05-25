@@ -11,7 +11,8 @@ from covid_analysis.transforms import *
 # tell Python the type of the spark global so code completion works
 spark: SparkSession = spark
 
-is_prod = sys.argv[1] == "--prod"
+# check if job is running in production mode
+is_prod = len(sys.argv) >= 2 and sys.argv[1] == "--prod"
 
 filename = wget.download("https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/hospitalizations/covid-hospitalizations.csv")
  
@@ -25,8 +26,10 @@ df = index_to_col(df, colname='date')
 # Convert from Pandas to a pyspark sql DataFrame.
 df = spark.createDataFrame(df)
 
+print("Covid data successfully imported.")
+
 # only write table in production mode
-if not is_prod:
+if is_prod:
     # Write to Delta Lake
     df.write.mode('overwrite').saveAsTable('covid_stats')
 

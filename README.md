@@ -19,13 +19,16 @@ Goal: Convert into a Python only job following software best practices using an 
 Step 1:
 
 1. create new git repo
-2. Convert notebookt to python job
+2. Convert notebook to python job
     2.1 copy raw notebook into `jobs/covid_trends_job_raw.py`
     2.2 convert to plain python
     2.3 create dbx config
       2.3.1 create conf/deployment.py
       2.3.2 run `dbx configure`
-    2.4 Run the job `dbx execute --cluster-name "<CLUSTER_NAME>" --job covid_analysis_etl_raw` 
+    2.4 Run the job code on an interactive cluster without creating a job definition `dbx execute --cluster-name "<CLUSTER_NAME>" --job covid_analysis_etl_raw`. This is the fastes way to run code on a cluster with dbx.
+    2.5 (optional) Run deply library and run job on a cluster (this will create a job definition)
+        2.5.1 `dbx deploy`
+        2.5.2 `dbx launch --job covid_analysis_etl_raw`
 3. Extract code into a library (just like for the notebook case)
     3.1 create folder `covid_analysis`
     3.2 create `covid_analysis/transforms.py` https://github.com/databricks/notebook-best-practices/blob/main/covid_analysis/transforms.py
@@ -45,6 +48,7 @@ Step 1:
         5.2.2 Adjust cluster configuration for prod as needed
         5.2.3 Add code to the job to only write the table in prod mode
     5.3 create `.github/workflows/*.yml`
+    5.4 configure Github secrets for `DATABRICKS_HOST` and `DATABRICKS_TOKEN`
 
 
 

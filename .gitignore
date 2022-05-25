@@ -34,7 +34,8 @@ override.tf.json
 terraform.rc
 
 *~
-.dbx
+.dbx/sync
+.dbx/lock.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
