@@ -4,16 +4,17 @@
 # with with CONFIGURE HERE:
 name: Run pre-merge Databricks tests
 
-# We'll run tests on any pull request.
+# CONFIGURE HERE: Uncomment the lines below to run tests on every pull request.
 # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
-on:
-  pull_request:
+#
+# on:
+#   pull_request:
 
 env:
   # CONFIGURE HERE: Replace this hostname with your Databricks workspace.
   #
   # An example value is https://db-sme-demo-docs.cloud.databricks.com/
-  DATABRICKS_HOST: https://db-sme-demo-docs.cloud.databricks.com/
+  DATABRICKS_HOST: <Replace with your Workspace address here>
 
 jobs:
   unit-test-notebook:
@@ -38,7 +39,7 @@ jobs:
           # associated with this token. For this reason, we recommend using a 
           # low-privilege test account or service principal.
           # https://github.com/databricks/run-notebook/#prerequisites
-          databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
+          databricks-token: <Replace with a personal access token used to run tests>
 
           # CONFIGURE HERE: Replace this with the name of a notebook to be tested.
           # An example value is notebooks/run_unit_tests.py
@@ -46,7 +47,8 @@ jobs:
 
           # CONFIGURE HERE: Replace this with the identity of a cluster used to run tests.
           # An example value is 0525-025754-t3vqgyf7
-          existing-cluster-id: "0525-025754-t3vqgyf7"
+          # https://docs.databricks.com/workspace/workspace-details.html#cluster-url-and-id
+          existing-cluster-id: <Replace with a cluster ID>
 
           git-commit: "${{ github.event.pull_request.head.sha }}"
 
