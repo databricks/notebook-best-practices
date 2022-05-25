@@ -21,13 +21,13 @@ resource "github_repository" "github_repository" {
 }
 
 # https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/defining-the-mergeability-of-pull-requests/about-protected-branches#require-status-checks-before-merging
-resource "github_branch_protection" "main" {
+resource "github_branch_protection" "advanced" {
   depends_on = [github_repository.github_repository]
 
   allows_deletions                = false
   allows_force_pushes             = false
   enforce_admins                  = true
-  pattern                         = "main"
+  pattern                         = "advanced"
   push_restrictions               = []
   require_conversation_resolution = false
   require_signed_commits          = false
