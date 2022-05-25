@@ -4,7 +4,7 @@ provider "github" {
 }
 
 resource "github_repository" "github_repository" {
-  name = "notebook-best-practices"
+  name = var.github_repository_name
 
   description = "An example showing how to apply software engineering best practices to Databricks notebooks."
 
