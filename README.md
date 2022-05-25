@@ -1,6 +1,6 @@
 # Software engineering best practices for Databricks notebooks
 
-This repository is a companion for the documentation example [Software engineering best practices for notebooks](https://docs.databricks.com/notebooks/best-practices.html).
+This repository is a companion for the example article [Software engineering best practices for Databricks notebooks](https://docs.databricks.com/notebooks/best-practices.html).
 
 Going through the example, you will:
 
