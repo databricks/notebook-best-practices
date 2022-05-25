@@ -1,9 +1,9 @@
-import wget
+import urllib.request
 import pyspark.pandas as ps
 import pandas as pd
 
-wget.download("https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/hospitalizations/covid-hospitalizations.csv", out="/tmp/covid-hospitalizations.csv")
- 
+urllib.request.urlretrieve("https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/hospitalizations/covid-hospitalizations.csv", "/tmp/covid-hospitalizations.csv")
+
 # read from /tmp, subset for USA, pivot and fill missing values
 df = pd.read_csv("/tmp/covid-hospitalizations.csv")
 df = df[df.iso_code == 'USA']\
