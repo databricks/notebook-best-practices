@@ -1,4 +1,10 @@
-# Run the testing notebook in the repo on every pull request except main.
+# This file configures GitHub to run Databricks notebook tests on pull requests.
+#
+# To guard against misconfiguration, we recommend restricting modifications to this 
+# configuration file using CODEOWNERS or required review. Otherwise, any pull request
+# may disable tests by modifying this file.
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+# https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews#required-reviews
 name: Run pre-merge Databricks tests
 
 on:
@@ -25,8 +31,6 @@ jobs:
           git-commit: "${{ github.event.pull_request.head.sha }}"
           databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
           existing-cluster-id: ${{ env.TEST_CLUSTER_ID }}
-          # Grant all users view permission on the notebook's results, so that they can
-          # see the result of the notebook, if they have related access permissions.
           access-control-list-json: >
             [
               {
@@ -37,7 +41,7 @@ jobs:
           run-name: "EDA transforms helper module unit tests"
 
   covid-eda-notebook:
-    # Run the notebook test only if the unit tests succeed.
+    # Run the notebook test only if the unit tests above succeed.
     needs: unit-test-notebook
 
     timeout-minutes: 15
@@ -48,14 +52,18 @@ jobs:
       - name: Run test notebook
         uses: databricks/run-notebook@main
         with:
+          # This assigns the 'Mode' parameter created in the notebook with dbutils.widgets.dropdown
+          # and retrieved with dbutils.widgets.get('Mode').
+          # https://docs.databricks.com/notebooks/widgets.html
+          # https://docs.databricks.com/data-engineering/jobs/jobs.html#job-run-with-different-params
+          notebook-params-json: >
+            { "Mode": "Test" }
+
           local-notebook-path: notebooks/covid_eda_tested.py
           git-commit: "${{ github.event.pull_request.head.sha }}"
           databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
           existing-cluster-id: ${{ env.TEST_CLUSTER_ID }}
-          notebook-params-json: >
-            { "Mode": "Test" }
-          # Grant all users view permission on the notebook's results, so that they can
-          # see the result of the notebook, if they have related access permissions.
+
           access-control-list-json: >
             [
               {
