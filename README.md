@@ -1,8 +1,3 @@
-# Advanced software engineering practices with Databricks Notebooks
+# Software engineering best practices for Databricks notebooks
 
-This branch covers advanced topics.
-
-* Running tests pre-merge
-* Prohibiting merges to `main` when tests fail
-* Verifiable workflow deployments using service principals
-* Requiring code review for workflow deployments
+TODO.
