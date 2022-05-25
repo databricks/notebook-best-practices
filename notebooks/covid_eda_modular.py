@@ -7,8 +7,6 @@
 
 # MAGIC %load_ext autoreload
 # MAGIC %autoreload 2
-# MAGIC dbutils.widgets.dropdown('Mode', 'Test', ['Test', 'Prod'])
-# MAGIC running_under_test = dbutils.widgets.get('Mode') != 'Prod'
 
 # COMMAND ----------
 
@@ -17,12 +15,7 @@
 
 # COMMAND ----------
 
-import os
-
-if running_under_test:
-  data_path = os.path.abspath('../tests/testdata.csv')
-else:
-  data_path = 'https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/hospitalizations/covid-hospitalizations.csv'
+data_path = 'https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/hospitalizations/covid-hospitalizations.csv'
 print(f'Data path: {data_path}')
 
 # COMMAND ----------
@@ -48,11 +41,8 @@ display(df)
 
 # COMMAND ----------
 
-if running_under_test:
-  df.createOrReplaceTempView('covid_stats')
-else:
-  # Write to Delta Lake
-  df.write.mode('overwrite').saveAsTable('covid_stats')
+# Write to Delta Lake
+df.write.mode('overwrite').saveAsTable('covid_stats')
 
 # COMMAND ----------
 
