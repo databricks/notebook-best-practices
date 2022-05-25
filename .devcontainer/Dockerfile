@@ -33,7 +33,7 @@ RUN sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xB19
    && rm ./zulu-repo_1.0.0-3_all.deb
 
 # Install Databricks tools
-RUN pip3 --disable-pip-version-check --no-cache-dir install databricks-cli git+https://git@github.com/databrickslabs/dbx@main
+RUN pip3 --disable-pip-version-check --no-cache-dir install databricks-cli git+https://git@github.com/databrickslabs/dbx@bde6d4d9278ef7860647ff6bd5cb31fef810645e
 
 ARG TARGETARCH
 
@@ -44,5 +44,5 @@ RUN cd /tmp \
    && mv ./terraform /usr/local/bin/terraform \
    && rm terraform*.zip
 
-# Make python3 the default
-RUN ln -s /usr/bin/python3 /usr/bin/python
+# Make python3 the default and update pip
+RUN ln -s /usr/bin/python3 /usr/bin/python && /usr/bin/python3 -m pip install --upgrade pip

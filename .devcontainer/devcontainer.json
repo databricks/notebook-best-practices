@@ -12,7 +12,8 @@
 	
 	"mounts": [
 		// mount databricks config
-		"source=${localEnv:HOME}/.databrickscfg,target=/home/vscode/.databrickscfg,type=bind,consistency=cached"
+		"source=${localEnv:HOME}/.databrickscfg,target=/home/vscode/.databrickscfg,type=bind,consistency=cached",
+		"source=${localEnv:HOME}/.databricks-connect,target=/home/vscode/.databricks-connect,type=bind,consistency=cached"
 	],
 
 	// Set *default* container specific settings.json values on container create.
