@@ -1,0 +1,64 @@
+# This file configures GitHub to run Databricks notebook tests on pull requests.
+#
+# To use this with your own repos, you'll need to adjust the parameters marked
+# with with CONFIGURE HERE:
+name: Run pre-merge Databricks tests
+
+# CONFIGURE HERE: Uncomment the lines below to run tests on every pull request.
+# https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
+#
+# on:
+#   pull_request:
+
+env:
+  # CONFIGURE HERE: Replace this hostname with your Databricks workspace.
+  #
+  # An example value is https://db-sme-demo-docs.cloud.databricks.com/
+  DATABRICKS_HOST: <Replace with your Workspace address here>
+
+jobs:
+  unit-test-notebook:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Run test notebook
+        uses: databricks/run-notebook@main
+        with:
+          # CONFIGURE HERE: This is the personal access token (PAT) used to authenticate
+          # to the workspace identified by DATABRICKS_HOST.
+          #
+          # https://docs.databricks.com/dev-tools/api/latest/authentication.html
+          # 
+          # We recommend storing the PAT value as a GitHub secret.
+          # https://docs.github.com/en/actions/security-guides/encrypted-secrets
+          #
+          # Keep in mind that test code will run with the permissions of the account 
+          # associated with this token. For this reason, we recommend using a 
+          # low-privilege test account or service principal.
+          # https://github.com/databricks/run-notebook/#prerequisites
+          databricks-token: <Replace with a personal access token used to run tests>
+
+          # CONFIGURE HERE: Replace this with the name of a notebook to be tested.
+          # An example value is notebooks/run_unit_tests.py
+          local-notebook-path: notebooks/run_unit_tests.py
+
+          # CONFIGURE HERE: Replace this with the identity of a cluster used to run tests.
+          # An example value is 0525-025754-t3vqgyf7
+          # https://docs.databricks.com/workspace/workspace-details.html#cluster-url-and-id
+          existing-cluster-id: <Replace with a cluster ID>
+
+          git-commit: "${{ github.event.pull_request.head.sha }}"
+
+          # Grant all users view permission on the notebook's results, so that they can
+          # see the result of the notebook, if they have related access permissions.
+          access-control-list-json: >
+            [
+              {
+                "group_name": "users",
+                "permission_level": "CAN_VIEW"
+              }
+            ]
+          run-name: "EDA transforms helper module unit tests"

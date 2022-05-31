@@ -1,0 +1,1 @@
+This repo will pull COVID-19 Hospitalization data organized and shared by Our World in Data (https://github.com/owid/covid-19-data).
