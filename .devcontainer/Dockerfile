@@ -33,7 +33,7 @@ RUN sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xB19
    && rm ./zulu-repo_1.0.0-3_all.deb
 
 # Install Databricks tools
-RUN pip3 --disable-pip-version-check --no-cache-dir install databricks-cli git+https://git@github.com/databrickslabs/dbx@bde6d4d9278ef7860647ff6bd5cb31fef810645e
+RUN pip3 --disable-pip-version-check --no-cache-dir install databricks-cli git+https://git@github.com/databrickslabs/dbx@8b1415be8110fcb41c0e80a52c3f8d512bb98621
 
 ARG TARGETARCH
 

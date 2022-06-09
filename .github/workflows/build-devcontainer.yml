@@ -1,0 +1,34 @@
+name: Generate Dev Container Image
+on:
+  push:
+    branches:
+      - 'fabian'
+    paths:
+      - '.devcontainer/**/*'
+permissions:
+  contents: read
+  packages: write
+jobs:
+  devcontainer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          set -e
+
+          # Update this based on your image name and the path of the .devcontainer folder in your repository
+          FOLDER_WITH_DOT_DEVCONTAINER="."
+          IMAGE_NAME="databrick-dbr-10.4"
+          IMAGE_REPOSITORY="$(echo "ghcr.io/${{ github.repository_owner }}/${IMAGE_NAME}" | tr '[:upper:]' '[:lower:]')"
+
+          # [Optional] Enable buildkit, set output to plain text for logging
+          export DOCKER_BUILDKIT=1
+          export BUILDKIT_PROGRESS=plain
+
+          # Do the build - update
+          npm install -g "@vscode/dev-container-cli"
+          devcontainer build --no-cache --image-name "${IMAGE_REPOSITORY}" "${FOLDER_WITH_DOT_DEVCONTAINER}"
+
+          # Push image to GitHub Container Registry
+          echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker push "${IMAGE_REPOSITORY}"
