@@ -32,7 +32,7 @@ jobs:
 
       - name: Install dependencies and project in dev mode
         run: |
-          pip install -r unit-requirements.txt
+          pip install -r requirements-dev.txt
           pip install -e .
 
       - name: Run unit tests
