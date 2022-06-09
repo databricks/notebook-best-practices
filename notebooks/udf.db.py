@@ -6,6 +6,8 @@
 
 # MAGIC %md
 # MAGIC ## Using inline code
+# MAGIC 
+# MAGIC Inline UDFs work fine both in Databricks and from VSCode.
 
 # COMMAND ----------
 
@@ -39,6 +41,3 @@ spark.udf.register("squaredWithPython", squared_typed_lib, LongType())
 
 spark.range(1, 20).createOrReplaceTempView("test")
 display(spark.sql("select id, squaredWithPython(id) as id_squared from test"))
-
-# COMMAND ----------
-

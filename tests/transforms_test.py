@@ -2,11 +2,13 @@
 import pytest
 from textwrap import fill
 import os
+import sys
 import pandas as pd
 import numpy as np
-from covid_analysis.transforms import *
 from pyspark.sql import SparkSession
 
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/..")
+from covid_analysis.transforms import *
 
 @pytest.fixture
 def raw_input_df() -> pd.DataFrame:

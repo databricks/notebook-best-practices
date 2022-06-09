@@ -1,0 +1,8 @@
+dist/
+notebooks/
+jobs/
+covid_analysis/
+tests/
+requirements.txt
+setup.py
+README.md
