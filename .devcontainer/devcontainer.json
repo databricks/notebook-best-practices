@@ -37,7 +37,7 @@
 		"ms-python.python",
 		"ms-python.vscode-pylance",
 		"HashiCorp.terraform",
-		"/tmp/databricks-notebook-0.0.1.vsix"
+		"/workspaces/notebook-best-practices/.devcontainer/databricks-notebook-0.0.1.vsix"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
