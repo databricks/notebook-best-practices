@@ -19,8 +19,8 @@
 	// Set *default* container specific settings.json values on container create.
 	"settings": { 
 		"python.defaultInterpreterPath": "/usr/bin/python3",
-		"python.linting.enabled": true,
-		"python.linting.pylintEnabled": true,
+		"python.linting.enabled": false,
+		"python.linting.pylintEnabled": false,
 		"python.formatting.autopep8Path": "/usr/local/bin/autopep8",
 		"python.formatting.blackPath": "/usr/local/bin/black",
 		"python.formatting.yapfPath": "/usr/local/bin/yapf",
