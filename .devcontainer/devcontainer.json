@@ -30,6 +30,11 @@
 		"python.linting.pycodestylePath": "/usr/local/bin/pycodestyle",
 		"python.linting.pydocstylePath": "/usr/local/bin/pydocstyle",
 		"python.linting.pylintPath": "/usr/local/bin/pylint",
+		
+		// format python on save
+		"python.formatting.provider": "black",
+		"editor.formatOnSave": true,
+		"editor.formatOnPaste": true,
 
 		// configure pytest support
 		"python.testing.pytestArgs": [

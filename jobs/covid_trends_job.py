@@ -9,17 +9,18 @@ from pyspark.sql import SparkSession
 from covid_analysis.transforms import *
 
 # tell Python the type of the spark global so code completion works
-spark: SparkSession = spark
+spark: SparkSession
 
 # check if job is running in production mode
 is_prod = len(sys.argv) >= 2 and sys.argv[1] == "--prod"
 
-urllib.request.urlretrieve("https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/hospitalizations/covid-hospitalizations.csv", "/tmp/covid-hospitalizations.csv")
- 
+urllib.request.urlretrieve(
+    "https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/hospitalizations/covid-hospitalizations.csv", "/tmp/covid-hospitalizations.csv")
+
 # read from /tmp, subset for USA, pivot and fill missing values
 df = pd.read_csv("/tmp/covid-hospitalizations.csv")
 df = filter_country(df, country='DZA')
-df = pivot_and_clean(df, fillna=0)  
+df = pivot_and_clean(df, fillna=0)
 df = clean_spark_cols(df)
 df = index_to_col(df, colname='date')
 
@@ -35,6 +36,3 @@ if is_prod:
 
     # display sample data
     spark.sql('select * from covid_stats').show(10)
-
-
-
