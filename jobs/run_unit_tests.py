@@ -2,7 +2,7 @@ import pytest
 import os
 import sys
 
-os.chdir('..')
+os.chdir("..")
 
 # Skip writing pyc files on a readonly filesystem.
 sys.dont_write_bytecode = True
