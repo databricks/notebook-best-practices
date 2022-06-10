@@ -1,8 +1,5 @@
 dist/
-notebooks/
-jobs/
-covid_analysis/
+**/*.py
 tests/
 requirements.txt
-setup.py
 README.md
