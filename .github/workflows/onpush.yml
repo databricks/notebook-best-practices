@@ -31,7 +31,7 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN:  ${{ secrets.DATABRICKS_TOKEN }}
         with:
-          imageName: ghcr.io/databricks/notebook-best-practices:testing
+          imageName: ghcr.io/fjakobs/notebook-best-practices
           runCmd: |
             pip install -r requirements-dev.txt
             pip install -e .
