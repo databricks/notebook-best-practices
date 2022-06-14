@@ -5,8 +5,8 @@
 
 # COMMAND ----------
 
-# MAGIC %load_ext
-# MAGIC 2
+# MAGIC %load_ext autoreload
+# MAGIC %autoreload 2
 
 # COMMAND ----------
 
