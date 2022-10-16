@@ -14,8 +14,10 @@ env:
   # CONFIGURE HERE: Replace this hostname with your Databricks workspace.
   #
   # An example value is https://db-sme-demo-docs.cloud.databricks.com/
-  DATABRICKS_HOST: <Replace with your Workspace address here>
 
+  DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST_PROD}}
+  DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN_PROD}}
+  
 jobs:
   unit-test-notebook:
     runs-on: ubuntu-latest
@@ -39,7 +41,7 @@ jobs:
           # associated with this token. For this reason, we recommend using a 
           # low-privilege test account or service principal.
           # https://github.com/databricks/run-notebook/#prerequisites
-          databricks-token: <Replace with a personal access token used to run tests>
+          databricks-token:${DATABRICKS_TOKEN}
 
           # CONFIGURE HERE: Replace this with the name of a notebook to be tested.
           # An example value is notebooks/run_unit_tests.py
@@ -48,7 +50,7 @@ jobs:
           # CONFIGURE HERE: Replace this with the identity of a cluster used to run tests.
           # An example value is 0525-025754-t3vqgyf7
           # https://docs.databricks.com/workspace/workspace-details.html#cluster-url-and-id
-          existing-cluster-id: <Replace with a cluster ID>
+          existing-cluster-id: 1011-180928-pwhuc1ro
 
           git-commit: "${{ github.event.pull_request.head.sha }}"
 
