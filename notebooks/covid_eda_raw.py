@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC #### Get latest COVID-19 hospitalization data
+# MAGIC #### Get latest COVID-19 hospitalization data (Name changed)
 
 # COMMAND ----------
 
@@ -61,3 +61,7 @@ psdf.to_table(name='dev_covid_analysis', mode='overwrite')
 
 # MAGIC %sql
 # MAGIC SELECT * FROM dev_covid_analysis
+
+# COMMAND ----------
+
+
