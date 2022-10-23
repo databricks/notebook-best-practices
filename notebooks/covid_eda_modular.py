@@ -24,7 +24,7 @@ from covid_analysis.transforms import *
 import pandas as pd
 
 df = pd.read_csv(data_path)
-df = filter_country(df, country='DZA')
+df = filter_country(df, country='USA')
 df = pivot_and_clean(df, fillna=0)  
 df = clean_spark_cols(df)
 df = index_to_col(df, colname='date')
