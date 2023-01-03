@@ -35,3 +35,11 @@ terraform.rc
 
 *~
 .dbx
+
+.databricks
+.venv
+**/__pycache__/
+dist/
+build/
+covid_analysis.egg-info/
+.DS_Store
