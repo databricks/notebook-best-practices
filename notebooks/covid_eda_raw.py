@@ -16,9 +16,11 @@ import pandas as pd
 
 # read from /tmp, subset for USA, pivot and fill missing values
 df = pd.read_csv("/tmp/covid-hospitalizations.csv")
-df = df[df.iso_code == 'USA']\
-     .pivot_table(values='value', columns='indicator', index='date')\
-     .fillna(0)
+df = (
+    df[df.iso_code == "USA"]
+    .pivot_table(values="value", columns="indicator", index="date")
+    .fillna(0)
+)
 
 display(df)
 
@@ -29,7 +31,7 @@ display(df)
 
 # COMMAND ----------
 
-df.plot(figsize=(13,6), grid=True).legend(loc='upper left')
+df.plot(figsize=(13, 6), grid=True).legend(loc="upper left")
 
 # COMMAND ----------
 
@@ -41,16 +43,16 @@ df.plot(figsize=(13,6), grid=True).legend(loc='upper left')
 
 import pyspark.pandas as ps
 
-clean_cols = df.columns.str.replace(' ', '_')
+clean_cols = df.columns.str.replace(" ", "_")
 
 # Create pandas on Spark dataframe
 psdf = ps.from_pandas(df)
 
 psdf.columns = clean_cols
-psdf['date'] = psdf.index
+psdf["date"] = psdf.index
 
 # Write to Delta table, overwrite with latest data each time
-psdf.to_table(name='dev_covid_analysis', mode='overwrite')
+psdf.to_table(name="dev_covid_analysis", mode="overwrite")
 
 # COMMAND ----------
 
@@ -60,4 +62,7 @@ psdf.to_table(name='dev_covid_analysis', mode='overwrite')
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC SELECT * FROM dev_covid_analysis
+# MAGIC SELECT
+# MAGIC   *
+# MAGIC FROM
+# MAGIC   dev_covid_analysis
