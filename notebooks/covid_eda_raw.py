@@ -18,6 +18,7 @@ import pandas as pd
 df = pd.read_csv("/tmp/covid-hospitalizations.csv")
 df = df[df.iso_code == 'USA'].pivot_table(values='value', columns='indicator', index='date').fillna(0)
 
+# i'm adding a comment for testing
 display(df)
 
 # COMMAND ----------
