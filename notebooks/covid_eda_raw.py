@@ -16,9 +16,7 @@ import pandas as pd
 
 # read from /tmp, subset for USA, pivot and fill missing values
 df = pd.read_csv("/tmp/covid-hospitalizations.csv")
-df = df[df.iso_code == 'USA']\
-     .pivot_table(values='value', columns='indicator', index='date')\
-     .fillna(0)
+df = df[df.iso_code == 'USA'].pivot_table(values='value', columns='indicator', index='date').fillna(0)
 
 display(df)
 
