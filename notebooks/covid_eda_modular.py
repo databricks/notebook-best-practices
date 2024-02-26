@@ -20,14 +20,14 @@ print(f'Data path: {data_path}')
 
 # COMMAND ----------
 
-from covid_analysis.transforms import *
+from covid_analysis import transforms
 import pandas as pd
 
 df = pd.read_csv(data_path)
-df = filter_country(df, country='DZA')
-df = pivot_and_clean(df, fillna=0)  
-df = clean_spark_cols(df)
-df = index_to_col(df, colname='date')
+df = transforms.filter_country(df, country='DZA')
+df = transforms.pivot_and_clean(df, fillna=0)  
+df = transforms.clean_spark_cols(df)
+df = transforms.index_to_col(df, colname='date')
 # Convert from Pandas to a pyspark sql DataFrame.
 df = spark.createDataFrame(df)
 
