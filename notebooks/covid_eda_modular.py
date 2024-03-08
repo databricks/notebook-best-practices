@@ -20,6 +20,14 @@ print(f'Data path: {data_path}')
 
 # COMMAND ----------
 
+from covid_analysis.tst import *
+
+# COMMAND ----------
+
+addition(2,3)
+
+# COMMAND ----------
+
 from covid_analysis.transforms import *
 import pandas as pd
 
