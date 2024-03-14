@@ -4,18 +4,16 @@
 
 # COMMAND ----------
 
-!wget -q https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/hospitalizations/covid-hospitalizations.csv -O /tmp/covid-hospitalizations.csv
-
-# COMMAND ----------
-
 # MAGIC %md #### Transform
 
 # COMMAND ----------
 
-import pandas as pd
+df = spark.sql("select * from aml_development.sample.covid_hospitalizations").toPandas()
+print(df.head())
+
+# COMMAND ----------
 
 # read from /tmp, subset for USA, pivot and fill missing values
-df = pd.read_csv("/tmp/covid-hospitalizations.csv")
 df = df[df.iso_code == 'USA']\
      .pivot_table(values='value', columns='indicator', index='date')\
      .fillna(0)
