@@ -3,7 +3,7 @@
 # To use this with your own repos, you'll need to adjust the parameters marked
 # with with CONFIGURE HERE:
 name: Run pre-merge Databricks tests
-
+#
 # CONFIGURE HERE: Uncomment the lines below to run tests on every pull request.
 # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
 #
