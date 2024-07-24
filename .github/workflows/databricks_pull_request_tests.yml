@@ -14,7 +14,7 @@ env:
   # CONFIGURE HERE: Replace this hostname with your Databricks workspace.
   #
   # An example value is https://db-sme-demo-docs.cloud.databricks.com/
-  DATABRICKS_HOST: ${{ sercrets.DATABRICKS_HOST }}
+  DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
 
 jobs:
   unit-test-notebook:
@@ -39,7 +39,7 @@ jobs:
           # associated with this token. For this reason, we recommend using a 
           # low-privilege test account or service principal.
           # https://github.com/databricks/run-notebook/#prerequisites
-          databricks-token: ${{ sercrets.DATABRICKS_TOKEN }}
+          databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
 
           # CONFIGURE HERE: Replace this with the name of a notebook to be tested.
           # An example value is notebooks/run_unit_tests.py
